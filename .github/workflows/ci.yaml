@@ -1,0 +1,68 @@
+name: CI Pipeline
+
+on: 
+  pull_request:
+    branches:
+      - main 
+
+jobs:
+  build:
+    name: Build and analyze
+
+    runs-on: ubuntu-latest
+
+    steps: 
+    - name: Check out code
+      uses: actions/checkout@v4
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '15'
+
+    - name: Install dependencies
+      run: |
+        if ! npm install; then
+          echo "installation was unsuccessful"
+          exit 1
+        else
+          echo "installation was successful"
+        fi
+
+    - name: run linter using ESLint
+      run: |
+        if ! npm run lint; then
+          echo "lint was unsuccessful"
+          exit 1
+        else
+          echo "lint was successful"
+        fi
+
+    - name: run formatter using Prettier
+      run: |
+        if ! npm run prettier-write; then
+          echo "iprettier was unsuccessful"
+          exit 1
+        else
+          echo "prettier was successful"
+        fi
+
+    - name: run test using jest
+      env:
+        CI: true
+      run: |
+        if ! npm test; then
+          echo "Jest was unsuccessful"
+          exit 1
+        else
+          echo "Jest was successful"
+        fi
+
+    - name: Build Project
+      run: |
+        if ! npm run build; then
+          echo "build was unsuccessful"
+          exit 1
+        else
+          echo "build was successful"
+        fi
