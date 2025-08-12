@@ -3,7 +3,9 @@ name: CI Pipeline
 on: 
   pull_request:
     branches:
-      - main 
+      - dev 
+      - stage 
+      - prod 
 
 jobs:
   build:
@@ -14,6 +16,8 @@ jobs:
     steps: 
     - name: Check out code
       uses: actions/checkout@v4
+      # with:
+      #   ref: feature
 
     - name: Set up Node.js
       uses: actions/setup-node@v4
@@ -29,40 +33,72 @@ jobs:
           echo "installation was successful"
         fi
 
-    - name: run linter using ESLint
+    - name: Run linter using ESLint
       run: |
         if ! npm run lint; then
           echo "lint was unsuccessful"
           exit 1
         else
-          echo "lint was successful"
+          echo "lint succeeded"
         fi
 
-    - name: run formatter using Prettier
+    - name: Run formatter using Prettier
       run: |
         if ! npm run prettier-write; then
-          echo "iprettier was unsuccessful"
+          echo "Prettier was unsuccessful"
           exit 1
         else
-          echo "prettier was successful"
+          echo "Prettier succeeded"
         fi
 
-    - name: run test using jest
-      env:
+    - name: Run tests using Jest
+      env: 
         CI: true
       run: |
         if ! npm test; then
           echo "Jest was unsuccessful"
           exit 1
         else
-          echo "Jest was successful"
+          echo "Jest succeeded"
         fi
 
-    - name: Build Project
+    - name: Build project
       run: |
         if ! npm run build; then
-          echo "build was unsuccessful"
+          echo "Build was unsuccessful"
           exit 1
         else
-          echo "build was successful"
+          echo "Build succeeded"
         fi
+
+  terraform:
+    runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.5.7"
+
+      - name: Terraform Init
+        working-directory: ./terraform
+        run: terraform init
+
+      - name: Terraform Validate
+        working-directory: ./terraform
+        run: terraform validate
+
+      - name: Terraform Plan
+        working-directory: ./terraform
+        run: terraform plan -var-file="terraform/env/${{ github.ref_name }}.tfvars"
+
+      - name: Terraform Apply
+        if: github.ref_name == 'stage' || github.ref_name == 'prod'
+        working-directory: ./terraform
+        run: terraform apply -auto-approve -var-file="terraform/env/${{ github.ref_name }}.tfvars"
