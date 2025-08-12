@@ -1,22 +1,80 @@
-# rdiCidr
+# 🚀 Static Website Deployment on AWS Using Terraform + GitHub Actions
 
-Ok, let's get this out of the way. Why did I choose that name? I chose the name because palindromes are fun. The app's name stands for RDerik's Interactive  CIDR (RDICIDR). I had to add the Interactive to make the name work. I hope you like it.
+## 📌 Overview
+This project is part of my **Assessment** and demonstrates how to deploy a static website on AWS using **S3** for hosting and **CloudFront** for global distribution, fully automated with **Terraform** and **GitHub Actions**.
 
-RDICIDR is a react-app, but if you want to focus on the subnetting code, check the file:
+---
 
-```
-src/lib/ipv4.js
-```
+## 🎯 Project Goals
+- 🌍 Deploy a **globally accessible static website**
+- 🔒 Secure content delivery with **HTTPS**
+- ⚡ Automate deployment using **Terraform + GitHub Actions**
+- 📦 Manage infrastructure as **code (IaC)** for easy reusability
 
-You should find there how each property was calculated.
+---
 
-This application is not a final product. I just built it because I wanted to refresh my subnetting knowledge. Enjoy!
+## 🛠️ Tech Stack
+- **Terraform** — Infrastructure as Code  
+- **AWS S3** — Static website hosting  
+- **AWS CloudFront** — CDN + HTTPS delivery  
+- **GitHub Actions** — CI/CD automation  
 
-# Live version
+---
 
-You can find a live version at the following url:
+## 📂 Project Structure
 
-[https://rdicidr.rderik.com](https://rdicidr.rderik.com)
+.github/workflows/terraform.yml   # CI/CD pipeline definition
+terraform/
+  ├── main.tf                     # AWS resources (S3 + CloudFront)
+  ├── outputs.tf                   # Outputs (bucket + CloudFront URL)
+  ├── variables.tf                 # Input variables for reusability
+  ├── versions.tf                  # Providers + Terraform settings
+website/
+  └── index.html                   # Static website content
+README.md                          # Documentation
 
-If you find this tool useful, you might enjoy reading my blog: [https://rderik.com](https://rderik.com)
-hi
+
+---
+
+## ⚙️ CI/CD Workflow
+The GitHub Actions pipeline:
+1. **Triggers** on push to the `main` branch  
+2. Sets up **Terraform**  
+3. Runs:
+   - `terraform init`
+   - `terraform validate`
+   - `terraform plan`
+   - `terraform apply`  
+4. Outputs:
+   - **S3 bucket name**
+   - **CloudFront distribution URL**  
+
+---
+
+## 🔐 Required GitHub Secrets
+| Secret Name             | Description |
+|-------------------------|-------------|
+| `AWS_ACCESS_KEY_ID`     | IAM user access key with S3 + CloudFront permissions |
+| `AWS_SECRET_ACCESS_KEY` | IAM user secret key |
+| `fullstack-site-lisa`  | Globally unique S3 bucket name |
+
+---
+
+## 🌍 How It Works
+
+### 1️⃣ **S3 Bucket**
+- Stores static files 
+- Configured for CloudFront access
+
+### 2️⃣ **CloudFront Distribution**
+- Uses the S3 bucket as the origin
+- Serves content over **HTTPS**
+
+---
+
+📦 Deployment Output
+After a successful run, Terraform will output:
+
+S3 Bucket Name — where files are stored
+
+CloudFront Domain Name — the live website URL
