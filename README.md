@@ -1,62 +1,76 @@
-🚀 Static Website Deployment on AWS Using Terraform + GitHub Actions
-This project is part of my Assessment and demonstrates how to deploy a static website on AWS using S3 for hosting and CloudFront for global distribution, fully automated with Terraform and GitHub Actions.
+# 🚀 Static Website Deployment on AWS Using Terraform + GitHub Actions
 
-✅ Project Highlights
-🌍 Globally accessible static site
+## 📌 Overview
+This project is part of my **Fullstack Assessment** and demonstrates how to deploy a static website on AWS using **S3** for hosting and **CloudFront** for global distribution — fully automated with **Terraform** and **GitHub Actions**.
 
-🔒 HTTPS-secured via CloudFront default SSL
+---
 
-⚡ Fully automated deployment with Terraform + GitHub Actions
+## 🎯 Project Goals
+- 🌍 Deploy a **globally accessible static website**
+- 🔒 Secure content delivery with **HTTPS**
+- ⚡ Automate deployment using **Terraform + GitHub Actions**
+- 📦 Manage infrastructure as **code (IaC)** for easy reusability
 
-📦 Infrastructure as Code (IaC) for reproducible setups
+---
 
-🔧 Tech Stack
-Terraform — Infrastructure as Code
+## 🛠️ Tech Stack
+- **Terraform** — Infrastructure as Code  
+- **AWS S3** — Static website hosting  
+- **AWS CloudFront** — CDN + HTTPS delivery  
+- **GitHub Actions** — CI/CD automation  
 
-AWS S3 — Static website storage
+---
 
-AWS CloudFront — CDN + HTTPS
+## 📂 Project Structure
 
-GitHub Actions — CI/CD automation
+---
 
-📁 Project Structure
-bash
-Copy
-.github/workflows/terraform.yml   # CI/CD pipeline definition
-terraform/
-  ├── main.tf                     # AWS resources (S3 + CloudFront)
-  ├── outputs.tf                   # Outputs (bucket + CloudFront URL)
-  ├── variables.tf                 # Input variables for reusability
-  ├── versions.tf                  # Providers + Terraform settings
-website/
-  └── index.html                   # Static website content
-README.md                          # Documentation
-⚙️ CI/CD Workflow
-The GitHub Actions workflow:
+## ⚙️ CI/CD Workflow
+The GitHub Actions pipeline:
+1. **Triggers** on push to the `main` branch  
+2. Sets up **Terraform**  
+3. Runs:
+   - `terraform init`
+   - `terraform validate`
+   - `terraform plan`
+   - `terraform apply`  
+4. Outputs:
+   - **S3 bucket name**
+   - **CloudFront distribution URL**  
 
-Triggers on push to the main branch
+---
 
-Sets up Terraform
+## 🔐 Required GitHub Secrets
+| Secret Name             | Description |
+|-------------------------|-------------|
+| `AWS_ACCESS_KEY_ID`     | IAM user access key with S3 + CloudFront permissions |
+| `AWS_SECRET_ACCESS_KEY` | IAM user secret key |
+| `FULLSTACK_ASSESSMENT`  | Globally unique S3 bucket name |
 
-Executes terraform init, terraform validate, terraform plan, and terraform apply
+---
 
-Outputs the S3 bucket name and CloudFront URL after deployment
+## 🌍 How It Works
 
-🔐 Required GitHub Secrets
-Secret Name	Description
-AWS_ACCESS_KEY_ID	IAM user access key with permissions for S3 + CloudFront
-AWS_SECRET_ACCESS_KEY	IAM user secret key
-FULLSTACK_ASSESSMENT	Globally unique S3 bucket name
+### 1️⃣ **S3 Bucket**
+- Stores static files (HTML, CSS, JS)
+- Configured for CloudFront access
 
-🌍 How It Works
-✅ S3
-Stores static files (HTML, CSS, JS)
+### 2️⃣ **CloudFront Distribution**
+- Uses the S3 bucket as the origin
+- Serves content over **HTTPS**
+- Globally distributed for low latency
 
-Allows CloudFront to fetch objects
+---
 
-✅ CloudFront
-Uses the S3 bucket as origin
+📦 Deployment Output
+After a successful run, Terraform will output:
 
-Serves content over HTTPS
+S3 Bucket Name — where files are stored
 
-Globally distributed for low latency
+CloudFront Domain Name — the live website URL
+
+
+
+
+cd website
+open index.html
