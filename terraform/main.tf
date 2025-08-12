@@ -1,9 +1,13 @@
-# In this file put all the logic to crete the proper infraestructure
 terraform {
-    required_providers {
-        # Add the provideres according to the challenges
+  required_providers {
+    aws = {
+      source = "hashicorp/aws"
+      version = "6.5.0"
     }
+  }
 }
 
+provider "aws" {
+  region =
+}
 
-# Add the resources relatedo to the provider
