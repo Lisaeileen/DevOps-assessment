@@ -1,17 +1,55 @@
-# rdiCidr
+🚀 Static Website Deployment on AWS Using Terraform + GitHub Actions
+This project demonstrates how to deploy a static website using S3, CloudFront, and ACM (SSL) — fully automated with Terraform and GitHub Actions.
 
-Ok, let's get this out of the way. Why did I choose that name? I chose the name because palindromes are fun. The app's name stands for RDerik's Interactive  CIDR (RDICIDR). I had to add the Interactive to make the name work. I hope you like it.
+You’ll get:
 
-RDICIDR is a react-app, but if you want to focus on the subnetting code, check the file:
+✅ A globally distributed HTTPS-secured static site
+✅ Automated infrastructure as code (IaC)
+✅ CI/CD pipeline triggered from GitHub
+🔧 Tech Stack
+Terraform — Infrastructure as Code
+AWS S3 — Static website hosting
+AWS CloudFront — Global CDN + HTTPS
+AWS ACM — Free SSL/TLS certificate
+AWS Route 53 — DNS
+GitHub Actions — CI/CD pipeline
+📁 Project Structure
+├── .github/workflows/terraform.yml # CI/CD pipeline ├── terraform/ │ ├── main.tf # Core AWS resources │ ├── outputs.tf # CDN + S3 URLs │ ├── variables.tf # Inputs for reusability │ ├── versions.tf # Providers + region setup ├── website/ │ └── index.html # Your static site └── README.md
 
-```
-src/lib/ipv4.js
-```
+🧪 Live Demo (YouTube Tutorial)
+📺 Watch the full walkthrough:
+👉 [soon to be uploaded!
 
-You should find there how each property was calculated.
+⚙️ CI/CD Workflow
+The GitHub Actions workflow:
 
-This application is not a final product. I just built it because I wanted to refresh my subnetting knowledge. Enjoy!
+Runs on main branch push
+Sets up Terraform
+Executes init, validate, plan, and apply
+Outputs the deployed URLs
+🔐 Required GitHub Secrets
+Secret Name	Description
+AWS_ACCESS_KEY_ID	IAM user access key (with S3, CloudFront, ACM, Route 53 permissions)
+AWS_SECRET_ACCESS_KEY	IAM user secret key
+S3_BUCKET_NAME	Globally unique bucket name
+DOMAIN_NAME	e.g. brierley.solutions as shown in video
+ZONE_ID	Route 53 hosted zone ID for your domain
+🌍 How It Works
+✅ S3
+Website files are uploaded as objects to a versioned bucket
+Static hosting is enabled
+✅ ACM
+TLS cert is requested via DNS validation (automated)
+Route 53 handles the CNAME record for validation
+✅ CloudFront
+Connects to S3 via OAI (origin access identity)
+HTTPS forced via ACM cert
+✅ Route 53
+Adds an A record to point DOMAIN_NAME to CloudFront distribution
+🖥️ Local Testing
+You can also preview locally:
 
+cd website open index.html
 # Live version
 
 You can find a live version at the following url:
@@ -19,4 +57,4 @@ You can find a live version at the following url:
 [https://rdicidr.rderik.com](https://rdicidr.rderik.com)
 
 If you find this tool useful, you might enjoy reading my blog: [https://rderik.com](https://rderik.com)
-hi
+
