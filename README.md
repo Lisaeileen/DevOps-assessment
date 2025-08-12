@@ -1,60 +1,62 @@
 🚀 Static Website Deployment on AWS Using Terraform + GitHub Actions
-This project demonstrates how to deploy a static website using S3, CloudFront, and ACM (SSL) — fully automated with Terraform and GitHub Actions.
+This project is part of my Assessment and demonstrates how to deploy a static website on AWS using S3 for hosting and CloudFront for global distribution, fully automated with Terraform and GitHub Actions.
 
-You’ll get:
+✅ Project Highlights
+🌍 Globally accessible static site
 
-✅ A globally distributed HTTPS-secured static site
-✅ Automated infrastructure as code (IaC)
-✅ CI/CD pipeline triggered from GitHub
+🔒 HTTPS-secured via CloudFront default SSL
+
+⚡ Fully automated deployment with Terraform + GitHub Actions
+
+📦 Infrastructure as Code (IaC) for reproducible setups
+
 🔧 Tech Stack
 Terraform — Infrastructure as Code
-AWS S3 — Static website hosting
-AWS CloudFront — Global CDN + HTTPS
-AWS ACM — Free SSL/TLS certificate
-AWS Route 53 — DNS
-GitHub Actions — CI/CD pipeline
+
+AWS S3 — Static website storage
+
+AWS CloudFront — CDN + HTTPS
+
+GitHub Actions — CI/CD automation
+
 📁 Project Structure
-├── .github/workflows/terraform.yml # CI/CD pipeline ├── terraform/ │ ├── main.tf # Core AWS resources │ ├── outputs.tf # CDN + S3 URLs │ ├── variables.tf # Inputs for reusability │ ├── versions.tf # Providers + region setup ├── website/ │ └── index.html # Your static site └── README.md
-
-🧪 Live Demo (YouTube Tutorial)
-📺 Watch the full walkthrough:
-👉 [soon to be uploaded!
-
+bash
+Copy
+.github/workflows/terraform.yml   # CI/CD pipeline definition
+terraform/
+  ├── main.tf                     # AWS resources (S3 + CloudFront)
+  ├── outputs.tf                   # Outputs (bucket + CloudFront URL)
+  ├── variables.tf                 # Input variables for reusability
+  ├── versions.tf                  # Providers + Terraform settings
+website/
+  └── index.html                   # Static website content
+README.md                          # Documentation
 ⚙️ CI/CD Workflow
 The GitHub Actions workflow:
 
-Runs on main branch push
+Triggers on push to the main branch
+
 Sets up Terraform
-Executes init, validate, plan, and apply
-Outputs the deployed URLs
+
+Executes terraform init, terraform validate, terraform plan, and terraform apply
+
+Outputs the S3 bucket name and CloudFront URL after deployment
+
 🔐 Required GitHub Secrets
 Secret Name	Description
-AWS_ACCESS_KEY_ID	IAM user access key (with S3, CloudFront, ACM, Route 53 permissions)
+AWS_ACCESS_KEY_ID	IAM user access key with permissions for S3 + CloudFront
 AWS_SECRET_ACCESS_KEY	IAM user secret key
-S3_BUCKET_NAME	Globally unique bucket name
-DOMAIN_NAME	e.g. brierley.solutions as shown in video
-ZONE_ID	Route 53 hosted zone ID for your domain
+FULLSTACK_ASSESSMENT	Globally unique S3 bucket name
+
 🌍 How It Works
 ✅ S3
-Website files are uploaded as objects to a versioned bucket
-Static hosting is enabled
-✅ ACM
-TLS cert is requested via DNS validation (automated)
-Route 53 handles the CNAME record for validation
+Stores static files (HTML, CSS, JS)
+
+Allows CloudFront to fetch objects
+
 ✅ CloudFront
-Connects to S3 via OAI (origin access identity)
-HTTPS forced via ACM cert
-✅ Route 53
-Adds an A record to point DOMAIN_NAME to CloudFront distribution
-🖥️ Local Testing
-You can also preview locally:
+Uses the S3 bucket as origin
 
-cd website open index.html
-# Live version
+Serves content over HTTPS
 
-You can find a live version at the following url:
-
-[https://rdicidr.rderik.com](https://rdicidr.rderik.com)
-
-If you find this tool useful, you might enjoy reading my blog: [https://rderik.com](https://rderik.com)
-
+Globally distributed for low latency
